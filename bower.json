@@ -1,5 +1,5 @@
 {
-  "name": "S04Funciones",
+  "name": "s04funciones",
   "main": "funciones.js",
   "authors": [
     "jeguia@sector04.com"
@@ -11,5 +11,5 @@
   ],
   "license": "MIT",
   "homepage": "https://www.sector04.com",
-  "private": true
+  "private": false
 }
