@@ -321,6 +321,8 @@ function inicializar_subcontroles(id_contenedor){
 	$(contenedor+' [data-tipo="decimal"]').forzarDecimales();
 		
 	//Inicializo los controles 
+	$(document).trigger("cargar_controles",[id_contenedor]);
+	/*
 	inicializar_imagenes(id_contenedor);
 	inicializar_ficheros(id_contenedor);
 	inicializar_editores(id_contenedor);
@@ -341,7 +343,8 @@ function inicializar_subcontroles(id_contenedor){
 	inicializar_tooltips(id_contenedor);
 	inicializar_galerias(id_contenedor);
 	inicializar_ratings(id_contenedor);
-
+	*/
+	
 	//Redimensiona y posiciona los subcontroles
 	redimensionar_controles(id_contenedor);
 

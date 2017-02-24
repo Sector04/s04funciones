@@ -1,0 +1,80 @@
+<html>
+    <head>
+        <title>S04Funciones</title>
+
+        <!--Includes para el core de funciones-->
+        <script src="bower_components/jquery/dist/jquery.min.js"></script>
+        <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+        <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+        <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap-theme.min.css">
+        
+        <!--Includes para el color picker-->
+        <script src="bower_components\bootstrap-colorselector\lib\bootstrap-colorselector-0.2.0\js\bootstrap-colorselector.js"></script>
+        <link rel="stylesheet" href="bower_components\bootstrap-colorselector\lib\bootstrap-colorselector-0.2.0\css\bootstrap-colorselector.css">
+        <script src="src/lib/color-selector.js"></script>
+
+        <script src="src/funciones.js"></script>
+    </head>
+    <body>
+        <div class="container">
+            <h1>Cargar una pagina en un tag</h1>
+            <p>Carga la <a href="ejemplos/ejemplo1.html" target="_blank">página</a> que está en el parametro <strong>data-cargar</strong> nada más cargar la página.</p>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">CÓDIGO</div>
+                        <div class="panel-body">
+                            <textarea rows="8" class="form-control"><div id="capa1" data-cargar="ejemplos/ejemplo1.html"></div></textarea>
+                        </div>
+                    </div>                    
+                </div>
+                <div class="col-md-6">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">RESULTADO</div>
+                        <div class="panel-body">
+                            <div id="capa1" data-cargar="ejemplos/ejemplo1.html"></div>
+                        </div>
+                    </div>                                        
+                </div>
+            </div>  
+
+            <h1>Selector de color</h1>
+            <p> Si ponemos a un select <strong>data-tipo='color'</strong> pinta un selector de color.</p>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">CÓDIGO</div>
+                        <div class="panel-body">
+                            <textarea rows="8" class="form-control">
+                                <select id="selColor" data-tipo='color'>
+                                    <option value="106" data-color="#A0522D">sienna</option>
+                                    <option value="47" data-color="#CD5C5C" selected="selected">indianred</option>
+                                    <option value="87" data-color="#FF4500">orangered</option>
+                                    <option value="15" data-color="#DC143C">crimson</option>
+                                    <option value="24" data-color="#FF8C00">darkorange</option>
+                                    <option value="78" data-color="#C71585">mediumvioletred</option>
+                                </select>
+                            </textarea>
+                        </div>
+                    </div>                    
+                </div>
+                <div class="col-md-6">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">RESULTADO</div>
+                        <div class="panel-body">
+                            <select id="selColor" data-tipo='color'>
+                                <option value="106" data-color="#A0522D">sienna</option>
+                                <option value="47" data-color="#CD5C5C" selected="selected">indianred</option>
+                                <option value="87" data-color="#FF4500">orangered</option>
+                                <option value="15" data-color="#DC143C">crimson</option>
+                                <option value="24" data-color="#FF8C00">darkorange</option>
+                                <option value="78" data-color="#C71585">mediumvioletred</option>
+                            </select>
+                        </div>
+                    </div>                                        
+                </div>
+            </div>
+
+        </div>
+    </body>
+</html>

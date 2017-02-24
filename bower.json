@@ -11,5 +11,9 @@
   ],
   "license": "MIT",
   "homepage": "https://www.sector04.com",
-  "private": false
+  "private": false,
+  "dependencies": {
+    "bootstrap": "3.3.7",
+    "bootstrap-colorselector": "*"
+  }
 }
