@@ -1,0 +1,15 @@
+{
+  "name": "S04Funciones",
+  "main": "funciones.js",
+  "authors": [
+    "jeguia@sector04.com"
+  ],
+  "description": "Librería de funciones para sector04",
+  "keywords": [
+    "sector04",
+    "funciones"
+  ],
+  "license": "MIT",
+  "homepage": "https://www.sector04.com",
+  "private": true
+}
