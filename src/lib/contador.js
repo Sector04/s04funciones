@@ -22,10 +22,12 @@ $(function(){
 			    // Configuración por defecto
 			    var defaults = {
 			        textSegundos: "Seg.",
-			        textNuevaSecuencia: "Nueva secuencia"
+			        textNuevaSecuencia: "Nueva secuencia",
+			        volumen: 100
 			    };        	    
                 elem.config = $.extend( {}, defaults, options );
                 elem.cargando=false;
+                elem.reproductor=$('body').reproductor();
 
                 //Creo los objetos necesarios
 		        elem.tbl=$('<table class="table"></table>');
@@ -84,11 +86,10 @@ $(function(){
 			//Agrego un evento al botón
 			bta.on('click',function(){metodos.agregar_sel_seg.call(elem,this)});
 			bte.on('click',function(){metodos.eliminar_sel_seg.call(elem,this)});
-			bte.on('click',function(){metodos.sonar_secuencia.call(elem,this)});
+			bts.on('click',function(){metodos.sonar_secuencia.call(elem,this)});
 			slr.on('change',function(){metodos.eliminar_linea_contador.call(elem,this)});
 
 			//Cargo los valores
-			console.log(valores);
 			$(valores).each(function(ind,val){
 				bta.attr('data-val',val);
 				bta.click();
@@ -182,8 +183,27 @@ $(function(){
 			}
 		},
 		sonar_secuencia:function(boton){
+			var tr=$(boton).parent().parent();
+			var tiempos=Array();
+			var repeticiones='';
 
-		}
+			//Miro a ver si se está reproduciendo parar pararlo
+			if($(boton).find('.glyphicon-stop').length>0) {
+				this.reproductor.reproductor('parar');
+				this.tbo.find('.son span').removeClass('glyphicon-stop').addClass('glyphicon-volume-up');	
+			}
+			else{
+				$(tr).find('select.seg').each(function(ind,obj){
+					tiempos[ind]=parseFloat('0'+$(obj).val());
+				});
+				repeticiones=$(tr).find('select.rep').val();
+				this.reproductor.reproductor('contar',tiempos,repeticiones);
+
+				//Cambio el estado de los botones
+				this.tbo.find('.son span').removeClass('glyphicon-stop').addClass('glyphicon-volume-up');
+				$(boton).find('span').removeClass('glyphicon-volume-up').addClass('glyphicon-stop');
+			}
+		} 	
     };
 
     $.fn.contador = function(methodOrOptions) {
@@ -193,7 +213,108 @@ $(function(){
             // Default to "init"
             return metodos.init.apply( this, arguments );
         } else {
-            $.error( 'Method ' +  methodOrOptions + ' does not exist on jQuery.tooltip' );
+            $.error( 'Method ' +  methodOrOptions + ' does not exist on jQuery.contador' );
+        }    
+    };
+
+
+})( jQuery );
+
+
+
+(function( $ ){
+    var metodos = {
+        init : function(options) {			
+			return this.each(function() {
+				var elem=this;
+
+			    // Configuración por defecto
+			    var defaults = {
+			        ruta: "ejemplos/mp3/",
+			        volumen: 100
+			    };        
+
+                elem.config = $.extend( {}, defaults, options );
+                elem.ind=0;
+                elem.repeticiones=0;
+                elem.conteo=Array();
+                elem.contando=false;
+                elem.iniciado=false;
+                elem.sonando=false;
+                elem.reproductor=document.createElement("embed");
+			});
+        },
+        contar : function(tiempos,repeticiones) {
+        	return this.each(function () {
+        		var elem=this;
+       			
+		        //Pongo el indice a 0 y inicializo las repeticiones
+		        this.ind++;
+		        this.indice=0;
+		        this.repeticiones=repeticiones;        
+				this.conteo=tiempos;
+		        this.contando=true;
+
+		        //Comienzo a reproducir
+		        setTimeout(function(){metodos.siguienteNumero.call(elem,elem.ind);},100);
+		    });
+		},
+		parar:function(){
+        	return this.each(function () {
+        		this.contando=false;
+        	});
+    	},
+		reproducirMp3:function(url){ 
+	        if(this.iniciado) document.body.removeChild(this.reproductor);
+	        this.reproductor.setAttribute("src",this.config.ruta+url);
+	        this.reproductor.setAttribute("volume",this.config.volumen);
+	        this.reproductor.setAttribute("autostart","true");
+	        this.reproductor.setAttribute("loop",false);
+	        this.reproductor.setAttribute("width",'0px');
+	        this.reproductor.setAttribute("height",'0px');
+	        document.body.appendChild(this.reproductor);
+	        this.iniciado=true;
+	    },
+	    siguienteNumero:function(id){
+	    	var elem=this;
+	 		var duracion=0;
+
+	        //solo reproduzco el sonido si no he parado o he cambiado el contador 
+	        if(this.contando && this.ind==id){
+
+	            //Reproduzco el sonido
+	            metodos.reproducirMp3.call(this,(this.indice+1)+'.mp3');            
+	            
+	            //Recojo la duración
+	            duracion=this.conteo[this.indice];
+
+	            //Aumento el indice
+	            this.indice++;
+
+	            //Miro a ver si ya he terminado la secuencia de conteo
+	            if(this.indice>this.conteo.length-1){
+	                //Resto una repetición
+	                this.repeticiones--;
+	                this.indice=0;                
+
+	                //Si quedan repeticiones vuelvo a lanzar el contador
+	                if(this.repeticiones==0) this.contando=false;
+	            }
+	            
+	            //Lanzo la siguiente reproducción
+	            if(this.contando) setTimeout(function(){metodos.siguienteNumero.call(elem,id)},duracion*1000);
+	        }
+	    }	
+	};
+
+    $.fn.reproductor = function(methodOrOptions) {
+        if ( metodos[methodOrOptions] ) {
+            return metodos[ methodOrOptions ].apply( this, Array.prototype.slice.call( arguments, 1 ));
+        } else if ( typeof methodOrOptions === 'object' || ! methodOrOptions ) {
+            // Default to "init"
+            return metodos.init.apply( this, arguments );
+        } else {
+            $.error( 'Method ' +  methodOrOptions + ' does not exist on jQuery.reproductor' );
         }    
     };
 
